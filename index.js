@@ -4,14 +4,14 @@ require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 5000;
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 // midleWare
 app.use(cors());
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ydmxw3q.mongodb.net/?retryWrites=true&w=majority`;
-
+// const uri = "mongodb://127.0.0.1:27017";
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -25,15 +25,35 @@ async function run() {
   try {
     // const coffeDatabaseDB = client.db("coffeDatabaseDB");
     // const coffees = database.collection("coffees");
+    const coffeDatabase = client.db("coffeDatabaseDB").collection("coffees");
     app.post("/coffee", async (req, res) => {
-      const coffeDatabase = client.db("coffeDatabaseDB").collection("coffees");
-
       const coffeeFromUI = req.body;
       const result = await coffeDatabase.insertOne(coffeeFromUI);
 
       res.send(result);
     });
-    app.get("/coffee", (req, res) => {});
+    app.get("/coffee", async (req, res) => {
+      const cursor = coffeDatabase.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+    app.get("/coffee/:id", async (req, res) => {
+      const id = req.params.id;
+      const quary = { _id: new ObjectId(id) };
+      const result = await coffeDatabase.findOne(quary);
+
+      res.send(result);
+    });
+    app.put("/coffee/:id", async (req, res) => {
+      const id = req.params.id;
+      const quary = { _id: new ObjectId(id) };
+    });
+    app.delete("/coffee/:id", async (req, res) => {
+      const id = req.params.id;
+      const quary = { _id: new ObjectId(id) };
+      const result = await coffeDatabase.deleteOne(quary);
+      res.send(result);
+    });
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
