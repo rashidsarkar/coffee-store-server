@@ -10,6 +10,11 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 app.use(cors());
 app.use(express.json());
 
+//  .env
+// DB_USER=coffeMaster
+// DB_PASS=GEODPKdCEwoRAFAj
+// process.env.DB_USER
+
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.ydmxw3q.mongodb.net/?retryWrites=true&w=majority`;
 // const uri = "mongodb://127.0.0.1:27017";
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
