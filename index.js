@@ -31,6 +31,8 @@ async function run() {
     // const coffeDatabaseDB = client.db("coffeDatabaseDB");
     // const coffees = database.collection("coffees");
     const coffeDatabase = client.db("coffeDatabaseDB").collection("coffees");
+    const userDatabase = client.db("coffeDatabaseDB").collection("user");
+
     app.post("/coffee", async (req, res) => {
       const coffeeFromUI = req.body;
       const result = await coffeDatabase.insertOne(coffeeFromUI);
@@ -75,6 +77,19 @@ async function run() {
       const result = await coffeDatabase.deleteOne(quary);
       res.send(result);
     });
+    //user relatited API
+    app.post("/user", async (req, res) => {
+      const user = req.body;
+      console.log(user);
+      const result = await userDatabase.insertOne(user);
+      res.send(result);
+    });
+    app.get("/user", async (req, res) => {
+      const cursor = userDatabase.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
