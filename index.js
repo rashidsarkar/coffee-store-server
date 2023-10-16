@@ -104,7 +104,23 @@ async function run() {
     app.put("/user/:id", async (req, res) => {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
-      const result = await userDatabase.updateOne();
+      const option = { upset: true };
+      const updatedUser = req.body;
+
+      const userwithUpdateInfoForUpdate = {
+        $set: {
+          name: updatedUser.name,
+          email: updatedUser.email,
+          image: updatedUser.image,
+        },
+      };
+      const result = await userDatabase.updateOne(
+        filter,
+        userwithUpdateInfoForUpdate,
+        option
+      );
+      res.send(result);
+      // const result = await userDatabase.updateOne();
     });
 
     // Connect the client to the server	(optional starting in v4.7)
