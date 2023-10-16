@@ -56,6 +56,11 @@ async function run() {
       const filter = { _id: new ObjectId(id) };
       const options = { upsert: true };
       const upDateCoffe = req.body;
+      // const updatData={}
+      // if(upDateCoffe.coffeeName){
+      //   updatData.coffeeName = upDateCoffe.coffeeName,
+
+      // }
 
       const coffe = {
         $set: {
@@ -67,6 +72,7 @@ async function run() {
           details: upDateCoffe.details,
           photo: upDateCoffe.photo,
         },
+        // $set :updatData
       };
       const result = await coffeDatabase.updateOne(filter, coffe, options);
       res.send(result);
