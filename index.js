@@ -56,7 +56,7 @@ async function run() {
       const filter = { _id: new ObjectId(id) };
       const options = { upsert: true };
       const upDateCoffe = req.body;
-      console.log(upDateCoffe);
+
       const coffe = {
         $set: {
           coffeeName: upDateCoffe.coffeeName,
@@ -80,7 +80,7 @@ async function run() {
     //user relatited API
     app.post("/user", async (req, res) => {
       const user = req.body;
-      console.log(user);
+
       const result = await userDatabase.insertOne(user);
       res.send(result);
     });
