@@ -89,6 +89,23 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    app.delete("/user/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const result = await userDatabase.deleteOne(filter);
+      res.send(result);
+    });
+    app.get("/user/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const result = await userDatabase.findOne(filter);
+      res.send(result);
+    });
+    app.put("/user/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const result = await userDatabase.updateOne();
+    });
 
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
